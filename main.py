@@ -158,15 +158,15 @@ def main():
                             if violation_actor:
                                 # Add button to calculate risk
                                 if st.button("Calculate Risk", type="primary"):
-                                    # Debug: Show what values we're passing
-                                    st.write("Debug info:")
-                                    st.write(f"Platform: {platform_choice}")
-                                    st.write(f"TOS Active: {tos_active}")
-                                    st.write(f"Published: {published}")
-                                    st.write(f"Violation Count: {violation_count}")
-                                    st.write(f"PII Check: {pii_check}")
-                                    st.write(f"Violation Type: {violation_type_choice}")
-                                    st.write(f"Violation Actor: {violation_actor}")
+                                    # Debug: Show what values we're passing -- removed for now
+                                    #st.write("Debug info:")
+                                    #st.write(f"Platform: {platform_choice}")
+                                    #st.write(f"TOS Active: {tos_active}")
+                                    #st.write(f"Published: {published}")
+                                    #st.write(f"Violation Count: {violation_count}")
+                                    #st.write(f"PII Check: {pii_check}")
+                                    #st.write(f"Violation Type: {violation_type_choice}")
+                                    #st.write(f"Violation Actor: {violation_actor}")
                                     
                                     # Calculate risk and display results
                                     total_risk = calculate_risk(platform_choice, tos_active, published, violation_count, pii_check, violation_type_choice, violation_actor)
