@@ -7,9 +7,9 @@ violation_extensive = ["Under 10,000 violations", "10,000+ violations"]
 pii_involved = ["Yes", "No"]
 violation_type = ["Transcription", "Scraping", "Other (specify)"]
 
-# Example email template for Sarah's permission
+# Example email template for permission
 email_template = """
-Hi Sarah,
+Hi [Name],
 I'm reaching out to ask for your permission to proceed with a project that involves [platform] and may violate its Terms of Service. The research will be published, it involves [number] violations, and there are concerns about sensitive PII.
 Please let me know if you need more information or if this requires further review.
 Best regards,
@@ -32,8 +32,6 @@ def calculate_risk(platform, tos_violations, published_research, violation_exten
     
     if violation_extensive == "10,000+ violations":
         if platform == "Discord" or platform == "Other closed platforms":
-            risk += 2
-        else
             risk += 1
     
     if pii_involved == "Yes":  # Changed to check for "Yes" string
@@ -113,19 +111,26 @@ def main():
                         
                         # Only show calculate button if all questions are answered
                         if violation_type_choice:
-                            # Add button to calculate risk
-                            if st.button("Calculate Risk", type="primary"):
-                                # Debug: Show what values we're passing
-                                st.write("Debug info:")
-                                st.write(f"Platform: {platform_choice}")
-                                st.write(f"TOS Active: {tos_active}")
-                                st.write(f"Published: {published}")
-                                st.write(f"Violation Count: {violation_count}")
-                                st.write(f"PII Check: {pii_check}")
-                                st.write(f"Violation Type: {violation_type_choice}")
-                                
-                                # Calculate risk and display results
-                                total_risk = calculate_risk(platform_choice, tos_active, published, violation_count, pii_check, violation_type_choice)
+                            # Who is doing the violation
+                            st.write("**7. Are you doing the violation or has someone else (e.g. someone else scraped data that you want to use)?**")
+                            violation_actor = st.radio("", ["Yourself", "Someone else"], label_visibility="collapsed", key="actor_radio", index=None)
+                            
+                            # Only show calculate button if question 7 is answered
+                            if violation_actor:
+                                # Add button to calculate risk
+                                if st.button("Calculate Risk", type="primary"):
+                                    # Debug: Show what values we're passing
+                                    st.write("Debug info:")
+                                    st.write(f"Platform: {platform_choice}")
+                                    st.write(f"TOS Active: {tos_active}")
+                                    st.write(f"Published: {published}")
+                                    st.write(f"Violation Count: {violation_count}")
+                                    st.write(f"PII Check: {pii_check}")
+                                    st.write(f"Violation Type: {violation_type_choice}")
+                                    st.write(f"Violation Actor: {violation_actor}")
+                                    
+                                    # Calculate risk and display results
+                                    total_risk = calculate_risk(platform_choice, tos_active, published, violation_count, pii_check, violation_type_choice, violation_actor)
                                 
                                 st.markdown("---")  # Add separator before results
                                 
@@ -141,7 +146,7 @@ def main():
                                 
                                 # Special note for Discord
                                 if platform_choice == "Discord":
-                                    st.info("📋 **Additional Note:** For Discord projects, please check with our ethics officer before proceeding.")
+                                    st.info("📋 **Additional Note:** For Discord projects, please also check with our ethics officer before proceeding.")
 
 if __name__ == "__main__":
     main()
