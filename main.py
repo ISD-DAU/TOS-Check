@@ -27,14 +27,14 @@ def calculate_risk(platform, tos_violations, published_research, violation_exten
     if tos_violations == "Yes":
         risk += 2
     
-    if published_research == True:  # Changed from "Yes" to True
+    if published_research == "Yes":  # Changed to check for "Yes" string
         risk += 1
     
     if violation_extensive == "10,000+ violations":
         if platform == "Discord" or platform == "Other closed platforms":
             risk += 1
     
-    if pii_involved == True:  # Changed from "Yes" to True
+    if pii_involved == "Yes":  # Changed to check for "Yes" string
         risk += 2
     
     if violation_type == "Scraping":
@@ -58,69 +58,77 @@ def main():
         st.markdown("### ⚠️ Violating X's terms of service is prohibited")
         st.markdown("---")  # Add a separator line
     
-    # Active prohibition check
-    st.write("**2. Does the project actively prohibit terms of service violations?**")
-    tos_active = st.radio("", tos_violations, label_visibility="collapsed")
-    
-    # Display immediate warning for project prohibition
-    if tos_active == "Yes":
-        st.markdown("### 🚫 Violating terms of service is prohibited when prohibited by the project")
-        st.markdown("---")  # Add a separator line
-        return  # Stop here if prohibited by project
-    
-    # Only show remaining questions if not prohibited by project
-    if tos_active == "No":
-        # Published research status
-        st.write("**3. Will this research be published?**")
-        published = st.checkbox("", label_visibility="collapsed")
+    # Only show question 2 if platform is selected
+    if platform_choice:
+        # Active prohibition check
+        st.write("**2. Does the project actively prohibit terms of service violations?**")
+        tos_active = st.radio("", tos_violations, label_visibility="collapsed")
         
-        # Violation extent
-        st.write("**4. How many violations are we looking at?**")
-        violation_count = st.selectbox(
-            "",
-            violation_extensive,
-            label_visibility="collapsed"
-        )
+        # Display immediate warning for project prohibition
+        if tos_active == "Yes":
+            st.markdown("### 🚫 Violating terms of service is prohibited when prohibited by the project")
+            st.markdown("---")  # Add a separator line
+            return  # Stop here if prohibited by project
         
-        # Involvement of sensitive PII
-        st.write("**5. Does the project involve sensitive PII (Personally Identifiable Information)?**")
-        pii_check = st.checkbox("", key="pii_checkbox", label_visibility="collapsed")
-        
-        # Type of violation
-        st.write("**6. What type of violation are we assessing?**")
-        violation_type_choice = st.selectbox(
-            "",
-            violation_type,
-            label_visibility="collapsed"
-        )
-        
-        # Add button to calculate risk
-        if st.button("Calculate Risk", type="primary"):
-            # Debug: Show what values we're passing
-            st.write("Debug info:")
-            st.write(f"Platform: {platform_choice}")
-            st.write(f"TOS Active: {tos_active}")
-            st.write(f"Published: {published}")
-            st.write(f"Violation Count: {violation_count}")
-            st.write(f"PII Check: {pii_check}")
-            st.write(f"Violation Type: {violation_type_choice}")
+        # Only show remaining questions if TOS is not prohibited by project
+        if tos_active == "No":
+            # Published research status
+            st.write("**3. Will this research be published?**")
+            published = st.radio("", ["No", "Yes"], label_visibility="collapsed", key="published_radio")
             
-            # Calculate risk and display results
-            total_risk = calculate_risk(platform_choice, tos_active, published, violation_count, pii_check, violation_type_choice)
-            
-            st.markdown("---")  # Add separator before results
-            
-            if total_risk >= 4:
-                st.error(f"Project is deemed prohibited with a risk score of {total_risk}. No further action can be taken.")
-            elif total_risk == 2 or (total_risk == 3 and not published):
-                st.warning("Risk level indicates the need for higher-level approval. Please refer to the email template below for guidance.")
-            else:
-                st.success(f"Proceed with caution! Risk score: {total_risk}")
-            
-            # Display example email
-            if total_risk >= 2:
-                st.subheader("Example Email for Permission:")
-                st.markdown(email_template.replace("[platform]", platform_choice).replace("[number]", str(violation_count)))
+            # Only show question 4 if question 3 is answered
+            if published:
+                # Violation extent
+                st.write("**4. How many violations are we looking at?**")
+                violation_count = st.selectbox(
+                    "",
+                    violation_extensive,
+                    label_visibility="collapsed"
+                )
+                
+                # Only show question 5 if question 4 is answered
+                if violation_count:
+                    # Involvement of sensitive PII
+                    st.write("**5. Does the project involve sensitive PII (Personally Identifiable Information)?**")
+                    pii_check = st.radio("", ["No", "Yes"], label_visibility="collapsed", key="pii_radio")
+                    
+                    # Only show question 6 if question 5 is answered
+                    if pii_check:
+                        # Type of violation
+                        st.write("**6. What type of violation are we assessing?**")
+                        violation_type_choice = st.selectbox(
+                            "",
+                            violation_type,
+                            label_visibility="collapsed"
+                        )
+                        
+                        # Only show calculate button if all questions are answered
+                        if violation_type_choice:
+                            # Add button to calculate risk
+                            if st.button("Calculate Risk", type="primary"):
+                                # Debug: Show what values we're passing
+                                st.write("Debug info:")
+                                st.write(f"Platform: {platform_choice}")
+                                st.write(f"TOS Active: {tos_active}")
+                                st.write(f"Published: {published}")
+                                st.write(f"Violation Count: {violation_count}")
+                                st.write(f"PII Check: {pii_check}")
+                                st.write(f"Violation Type: {violation_type_choice}")
+                                
+                                # Calculate risk and display results
+                                total_risk = calculate_risk(platform_choice, tos_active, published, violation_count, pii_check, violation_type_choice)
+                                
+                                st.markdown("---")  # Add separator before results
+                                
+                                if total_risk >= 4:
+                                    st.error(f"Project is deemed prohibited with a risk score of {total_risk}. No further action can be taken.")
+                                elif total_risk == 2 or (total_risk == 3 and published == "No"):
+                                    st.warning("Risk level indicates the need for higher-level approval. Please refer to the email template below for guidance.")
+                                    # Display example email for warning level only
+                                    st.subheader("Example Email for Permission:")
+                                    st.markdown(email_template.replace("[platform]", platform_choice).replace("[number]", str(violation_count)))
+                                else:
+                                    st.success(f"Proceed with caution! Risk score: {total_risk}")
 
 if __name__ == "__main__":
     main()
