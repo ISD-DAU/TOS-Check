@@ -47,8 +47,9 @@ def calculate_risk(platform, tos_violations, published_research, violation_exten
     return risk
 
 def main():
-    # Track if any warnings are shown
-    show_mad_icon = False
+    # Initialize session state for tracking warnings
+    if 'show_warning' not in st.session_state:
+        st.session_state.show_warning = False
     
     # Create columns for title and icon
     col1, col2 = st.columns([4, 1])
@@ -56,8 +57,8 @@ def main():
         st.markdown("<h1 style='margin-bottom: 0;'>Ask Reb</h1>", unsafe_allow_html=True)
         st.markdown("<h2 style='margin-top: 0; color: gray;'>The ToS Violation Risk Expert</h2>", unsafe_allow_html=True)
     with col2:
-        # Only show normal icon if no warnings will be displayed
-        if platform_choice_temp != "X":
+        # Only show normal icon if no warning is active
+        if not st.session_state.show_warning:
             try:
                 icon = Image.open("bagel-icon.png")
                 st.image(icon, width=80)
@@ -76,35 +77,29 @@ def main():
     
     # Display immediate warning only for platform X and stop flow
     if platform_choice == "X":
+        st.session_state.show_warning = True
         # Display mad bagel icon
         try:
             mad_icon = Image.open("bagel-icon-mad.png")
             st.image(mad_icon, width=80)
         except FileNotFoundError:
-            pass  # Icon not found, continue without it
-        
+            pass
         st.markdown("### ⚠️ Violating X's terms of service is prohibited")
-        st.markdown("---")  # Add a separator line
-        return  # Stop here if X is selected
+        st.markdown("---")
+        return
     
-    # Only show question 2 if platform is selected (and not X)
-    if platform_choice:
-        # Active prohibition check
-        st.write("**2. Does the project actively prohibit terms of service violations?**")
-        tos_active = st.radio("", tos_violations, label_visibility="collapsed", index=None)
-        
-        # Display immediate warning for project prohibition
-        if tos_active == "Yes":
-            # Display mad bagel icon
-            try:
-                mad_icon = Image.open("bagel-icon-mad.png")
-                st.image(mad_icon, width=80)
-            except FileNotFoundError:
-                pass  # Icon not found, continue without it
-            
-            st.markdown("### 🚫 Violating terms of service is prohibited when prohibited by the project")
-            st.markdown("---")  # Add a separator line
-            return  # Stop here if prohibited by project
+    # Display immediate warning for project prohibition
+    if tos_active == "Yes":
+        st.session_state.show_warning = True
+        # Display mad bagel icon
+        try:
+            mad_icon = Image.open("bagel-icon-mad.png")
+            st.image(mad_icon, width=80)
+        except FileNotFoundError:
+            pass
+        st.markdown("### 🚫 Violating terms of service is prohibited when prohibited by the project")
+        st.markdown("---")
+        return
         
         # Only show remaining questions if TOS is not prohibited by project
         if tos_active == "No":
