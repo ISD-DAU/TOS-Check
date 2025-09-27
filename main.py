@@ -24,9 +24,6 @@ def calculate_risk(platform, tos_violations, published_research, violation_exten
         # Higher risk for platforms like Discord due to privacy expectations
         risk += 1
     
-    if tos_violations == "Yes":
-        risk += 2
-    
     if published_research == "Yes":  # Changed to check for "Yes" string
         risk += 1
     
