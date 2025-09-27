@@ -48,7 +48,13 @@ def calculate_risk(platform, tos_violations, published_research, violation_exten
 
 def main():
     st.title("TOS Violation Risk Assessor")
-    
+    # Display bagel icon
+    try:
+        icon = Image.open("bagel-icon.png")
+        st.image(icon, width=100)
+    except FileNotFoundError:
+        pass  # Icon not found, continue without it
+        
     # Platform selection
     st.write("**1. Which platform are we dealing with?**")
     platform_choice = st.selectbox(
