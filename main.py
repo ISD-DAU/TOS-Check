@@ -77,7 +77,7 @@ def main():
     # Only show question 2 if platform is selected (and not X)
     if platform_choice:
         # Active prohibition check
-        st.write("**2. Does the project actively prohibit terms of service violations?**")
+        st.write("**2. Does the relevant project actively prohibit terms of service violations?**")
         tos_active = st.radio("", tos_violations, label_visibility="collapsed", index=None)
         
         # Display immediate warning for project prohibition
@@ -107,7 +107,7 @@ def main():
                 # Only show question 5 if question 4 is answered
                 if violation_count:
                     # Involvement of sensitive PII
-                    st.write("**5. Does the project involve sensitive PII (Personally Identifiable Information)?**")
+                    st.write("**5. Does it involve sensitive data, such as PII from personal Facebook pages.**")
                     pii_check = st.radio("", ["No", "Yes"], label_visibility="collapsed", key="pii_radio", index=None)
                     
                     # Only show question 6 if question 5 is answered
@@ -136,7 +136,7 @@ def main():
                                 st.markdown("---")  # Add separator before results
                                 
                                 if total_risk >= 4:
-                                    st.error(f"Project is deemed prohibited with a risk score of {total_risk}. No further action can be taken.")
+                                    st.error(f"Violation is deemed prohibited with a risk score of {total_risk}. No further action can be taken.")
                                 elif total_risk >= 2:
                                     st.warning(f"Risk level indicates the need for higher-level approval. Risk score: {total_risk}. Please refer to the email template below for guidance.")
                                     # Display example email for warning level only
@@ -147,7 +147,9 @@ def main():
                                 
                                 # Special note for Discord
                                 if platform_choice == "Discord":
-                                    st.info("📋 **Additional Note:** For Discord projects, please also check with our ethics officer before proceeding.")
+                                    st.info("📋 **Additional Note:** For ToS violations on closed platforms like Discord, please also check with our ethics officer before proceeding.")
+                                if piee_check == "Yes":
+                                    st.info("📋 **Additional Note:** For sensitive data, please also check with our ethics officer before proceeding.")
 
 if __name__ == "__main__":
     main()
