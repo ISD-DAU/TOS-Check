@@ -47,6 +47,7 @@ def calculate_risk(platform, tos_violations, published_research, violation_exten
     return risk
 
 def main():
+    mad_reb = False
     # Create columns for title and icon
     col1, col2 = st.columns([4, 1])
     with col1:
@@ -54,8 +55,12 @@ def main():
         st.markdown("<h2 style='margin-top: 0; color: gray;'>The ToS Violation Risk Expert</h2>", unsafe_allow_html=True)
     with col2:
         try:
-            icon = Image.open("bagel-icon.png")
-            st.image(icon, width=80)
+            if mad_reb == False:
+                icon = Image.open("bagel-icon.png")
+                st.image(icon, width=80)
+            else:
+                icon = Image.open("bagel-icon-mad.png")
+                st.image(icon, width=80
         except FileNotFoundError:
             pass
 
@@ -71,24 +76,28 @@ def main():
     
     # Display immediate warning only for platform X and stop flow
     if platform_choice == "X":
+        mad_reb = True
         st.markdown("### ⚠️ Violating X's terms of service is prohibited")
         st.markdown("---")
         return  # Stop here if X is selected
     
     # Only show question 2 if platform is selected (and not X)
     if platform_choice:
+        mad_reb = False
         # Active prohibition check
         st.write("**2. Does the project actively prohibit terms of service violations?**")
         tos_active = st.radio("", tos_violations, label_visibility="collapsed", index=None)
         
         # Display immediate warning for project prohibition
         if tos_active == "Yes":
+            mad_reb = True
             st.markdown("### 🚫 Violating terms of service is prohibited when prohibited by the project")
             st.markdown("---")
             return  # Stop here if prohibited by project
         
         # Only show remaining questions if TOS is not prohibited by project
         if tos_active == "No":
+            mad_reb = False
             # Published research status
             st.write("**3. Will this research be published?**")
             published = st.radio("", ["No", "Yes"], label_visibility="collapsed", key="published_radio", index=None)
