@@ -1,6 +1,6 @@
 import streamlit as st
 
-platforms = ["Facebook", "Instagram", "Discord", "X", "Other"]
+platforms = ["Facebook", "Instagram", "Discord", "X", "TikTok", "Other"]
 tos_violations = ["No", "Yes"]
 published_research = ["Yes", "No"]
 violation_extensive = ["Under 10,000 violations", "10,000+ violations"]
