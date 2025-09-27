@@ -139,7 +139,7 @@ def main():
                                 
                                 # Special note for Discord
                                 if platform_choice == "Discord":
-                                    st.info("📋 **Additional Note:** For Discord projects, please also check with our ethics officer before proceeding.")
+                                    st.info("📋 **Additional Note:** For Discord projects, please check with our ethics officer before proceeding.")
 
 if __name__ == "__main__":
     main()
