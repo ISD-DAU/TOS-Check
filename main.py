@@ -74,7 +74,6 @@ def main():
     if platform_choice == "X":
         st.markdown("### ⚠️ Violating X's terms of service is prohibited")
         st.markdown("---")
-        return
     
     # Display immediate warning for project prohibition
         if platform_choice:
@@ -86,8 +85,7 @@ def main():
             if tos_active == "Yes":
                 st.markdown("### 🚫 Violating terms of service is prohibited when prohibited by the project")
                 st.markdown("---")
-                return
-        
+            
             # Only show remaining questions if TOS is not prohibited by project
             if tos_active == "No":
                 # Published research status
