@@ -23,9 +23,6 @@ def calculate_risk(platform, tos_violations, published_research, violation_exten
     if platform == "Discord":
         # Higher risk for platforms like Discord due to privacy expectations
         risk += 1
-
-    if platform == "X":
-        risk += 4
     
     if tos_violations == "Yes":
         risk += 2
@@ -53,7 +50,9 @@ def main():
     platform_choice = st.selectbox(
         "",
         platforms + ["Other closed platforms"],
-        label_visibility="collapsed"
+        label_visibility="collapsed",
+        index=None,
+        placeholder="Select a platform..."
     )
     
     # Display immediate warning only for platform X
@@ -65,7 +64,7 @@ def main():
     if platform_choice:
         # Active prohibition check
         st.write("**2. Does the project actively prohibit terms of service violations?**")
-        tos_active = st.radio("", tos_violations, label_visibility="collapsed")
+        tos_active = st.radio("", tos_violations, label_visibility="collapsed", index=None)
         
         # Display immediate warning for project prohibition
         if tos_active == "Yes":
@@ -77,32 +76,36 @@ def main():
         if tos_active == "No":
             # Published research status
             st.write("**3. Will this research be published?**")
-            published = st.radio("", ["No", "Yes"], label_visibility="collapsed", key="published_radio")
+            published = st.radio("", ["No", "Yes"], label_visibility="collapsed", key="published_radio", index=None)
             
             # Only show question 4 if question 3 is answered
-            if published:
+            if published is not None:
                 # Violation extent
                 st.write("**4. How many violations are we looking at?**")
                 violation_count = st.selectbox(
                     "",
                     violation_extensive,
-                    label_visibility="collapsed"
+                    label_visibility="collapsed",
+                    index=None,
+                    placeholder="Select violation count..."
                 )
                 
                 # Only show question 5 if question 4 is answered
                 if violation_count:
                     # Involvement of sensitive PII
                     st.write("**5. Does the project involve sensitive PII (Personally Identifiable Information)?**")
-                    pii_check = st.radio("", ["No", "Yes"], label_visibility="collapsed", key="pii_radio")
+                    pii_check = st.radio("", ["No", "Yes"], label_visibility="collapsed", key="pii_radio", index=None)
                     
                     # Only show question 6 if question 5 is answered
-                    if pii_check:
+                    if pii_check is not None:
                         # Type of violation
                         st.write("**6. What type of violation are we assessing?**")
                         violation_type_choice = st.selectbox(
                             "",
                             violation_type,
-                            label_visibility="collapsed"
+                            label_visibility="collapsed",
+                            index=None,
+                            placeholder="Select violation type..."
                         )
                         
                         # Only show calculate button if all questions are answered
