@@ -148,7 +148,7 @@ def main():
                                 # Special note for Discord
                                 if platform_choice == "Discord":
                                     st.info("📋 **Additional Note:** For ToS violations on closed platforms like Discord, please also check with our ethics officer before proceeding.")
-                                if piee_check == "Yes":
+                                if pii_check == "Yes":
                                     st.info("📋 **Additional Note:** For sensitive data, please also check with our ethics officer before proceeding.")
 
 if __name__ == "__main__":
