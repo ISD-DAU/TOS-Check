@@ -16,7 +16,7 @@ Best regards,
 [Your Name]
 """
 
-def calculate_risk(platform, tos_violations, published_research, violation_extensive, pii_involved, violation_type):
+def calculate_risk(platform, tos_violations, published_research, violation_extensive, pii_involved, violation_type, violation_actor):
     # Initialize risk score
     risk = 0
     
@@ -39,6 +39,13 @@ def calculate_risk(platform, tos_violations, published_research, violation_exten
     
     if violation_type == "Scraping":
         risk += 1
+    
+    # Adjust risk based on who is doing the violation
+    if violation_actor == "Someone else":
+        risk -= 1
+    
+    # Ensure risk doesn't go below 0
+    risk = max(0, risk)
     
     return risk
 
@@ -131,22 +138,22 @@ def main():
                                     
                                     # Calculate risk and display results
                                     total_risk = calculate_risk(platform_choice, tos_active, published, violation_count, pii_check, violation_type_choice, violation_actor)
-                                
-                                st.markdown("---")  # Add separator before results
-                                
-                                if total_risk >= 4:
-                                    st.error(f"Project is deemed prohibited with a risk score of {total_risk}. No further action can be taken.")
-                                elif total_risk >= 2:
-                                    st.warning(f"Risk level indicates the need for higher-level approval. Risk score: {total_risk}. Please refer to the email template below for guidance.")
-                                    # Display example email for warning level only
-                                    st.subheader("Example Email for Permission:")
-                                    st.markdown(email_template.replace("[platform]", platform_choice).replace("[number]", str(violation_count)))
-                                else:
-                                    st.success(f"Proceed with caution! Risk score: {total_risk}")
-                                
-                                # Special note for Discord
-                                if platform_choice == "Discord":
-                                    st.info("📋 **Additional Note:** For Discord projects, please also check with our ethics officer before proceeding.")
+                                    
+                                    st.markdown("---")  # Add separator before results
+                                    
+                                    if total_risk >= 4:
+                                        st.error(f"Project is deemed prohibited with a risk score of {total_risk}. No further action can be taken.")
+                                    elif total_risk >= 2:
+                                        st.warning(f"Risk level indicates the need for higher-level approval. Risk score: {total_risk}. Please refer to the email template below for guidance.")
+                                        # Display example email for warning level only
+                                        st.subheader("Example Email for Permission:")
+                                        st.markdown(email_template.replace("[platform]", platform_choice).replace("[number]", str(violation_count)))
+                                    else:
+                                        st.success(f"Proceed with caution! Risk score: {total_risk}")
+                                    
+                                    # Special note for Discord
+                                    if platform_choice == "Discord":
+                                        st.info("📋 **Additional Note:** For Discord projects, please also check with our ethics officer before proceeding.")
 
 if __name__ == "__main__":
     main()
