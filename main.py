@@ -89,6 +89,15 @@ def main():
         st.session_state.platform_choice = platform_choice
         st.rerun()  # Refresh to update the icon
     
+    # Display immediate warning only for platform X and stop flow
+    if platform_choice == "X":
+        st.markdown("### ⚠️ Violating X's terms of service is prohibited")
+        st.markdown("---")
+        return  # Stop here if X is selected
+    
+    # Only show question 2 if platform is selected (and not X)
+    if platform_choice:
+    
     # Only show question 2 if platform is selected (and not X)
     if platform_choice:
         # Active prohibition check
