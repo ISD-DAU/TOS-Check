@@ -34,7 +34,7 @@ def calculate_risk(platform, tos_violations, published_research, violation_exten
             risk += 1
     
     if pii_involved == "Yes":  # Changed to check for "Yes" string
-        risk += 2
+        risk += 1
     
     # Adjust risk based on who is doing the violation
     if violation_actor == "Someone else":
