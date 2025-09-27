@@ -47,24 +47,19 @@ def calculate_risk(platform, tos_violations, published_research, violation_exten
     return risk
 
 def main():
-    # Initialize session state for tracking warnings
-    if 'show_warning' not in st.session_state:
-        st.session_state.show_warning = False
-    
     # Create columns for title and icon
     col1, col2 = st.columns([4, 1])
     with col1:
         st.markdown("<h1 style='margin-bottom: 0;'>Ask Reb</h1>", unsafe_allow_html=True)
         st.markdown("<h2 style='margin-top: 0; color: gray;'>The ToS Violation Risk Expert</h2>", unsafe_allow_html=True)
     with col2:
-        # Only show normal icon if no warning is active
-        if not st.session_state.show_warning:
-            try:
-                icon = Image.open("bagel-icon.png")
-                st.image(icon, width=80)
-            except FileNotFoundError:
-                pass
-        
+        try:
+            icon = Image.open("bagel-icon.png")
+            st.image(icon, width=80)
+        except FileNotFoundError:
+            pass
+
+    
     # Platform selection
     st.write("**1. Which platform are we dealing with?**")
     platform_choice = st.selectbox(
@@ -77,13 +72,6 @@ def main():
     
     # Display immediate warning only for platform X and stop flow
     if platform_choice == "X":
-        st.session_state.show_warning = True
-        # Display mad bagel icon
-        try:
-            mad_icon = Image.open("bagel-icon-mad.png")
-            st.image(mad_icon, width=80)
-        except FileNotFoundError:
-            pass
         st.markdown("### ⚠️ Violating X's terms of service is prohibited")
         st.markdown("---")
         return
@@ -96,13 +84,6 @@ def main():
             
             # Display immediate warning for project prohibition
             if tos_active == "Yes":
-                st.session_state.show_warning = True
-                # Display mad bagel icon
-                try:
-                    mad_icon = Image.open("bagel-icon-mad.png")
-                    st.image(mad_icon, width=80)
-                except FileNotFoundError:
-                    pass
                 st.markdown("### 🚫 Violating terms of service is prohibited when prohibited by the project")
                 st.markdown("---")
                 return
