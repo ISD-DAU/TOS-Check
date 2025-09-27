@@ -1,4 +1,5 @@
 import streamlit as st
+from PIL import Image
 
 platforms = ["Facebook", "Instagram", "Discord", "X", "TikTok", "YouTube", "Other"]
 tos_violations = ["No", "Yes"]
