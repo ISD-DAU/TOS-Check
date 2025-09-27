@@ -47,17 +47,32 @@ def calculate_risk(platform, tos_violations, published_research, violation_exten
     return risk
 
 def main():
+    # Track if any warnings are shown
+    show_mad_icon = False
+    
+    # Check if we should show mad icon (do this check early)
+    platform_choice_temp = st.selectbox(
+        "",
+        platforms + ["Other closed platforms"],
+        label_visibility="collapsed",
+        index=None,
+        placeholder="Select a platform...",
+        key="temp_platform"
+    )
+    
     # Create columns for title and icon
     col1, col2 = st.columns([4, 1])
     with col1:
         st.markdown("<h1 style='margin-bottom: 0;'>Ask Reb</h1>", unsafe_allow_html=True)
         st.markdown("<h2 style='margin-top: 0; color: gray;'>The ToS Violation Risk Expert</h2>", unsafe_allow_html=True)
     with col2:
-        try:
-            icon = Image.open("bagel-icon.png")
-            st.image(icon, width=80)
-        except FileNotFoundError:
-            pass
+        # Only show normal icon if no warnings will be displayed
+        if platform_choice_temp != "X":
+            try:
+                icon = Image.open("bagel-icon.png")
+                st.image(icon, width=80)
+            except FileNotFoundError:
+                pass
         
     # Platform selection
     st.write("**1. Which platform are we dealing with?**")
@@ -89,10 +104,17 @@ def main():
         tos_active = st.radio("", tos_violations, label_visibility="collapsed", index=None)
         
         # Display immediate warning for project prohibition
-        if tos_active == "Yes":
-            st.markdown("### 🚫 Violating terms of service is prohibited when prohibited by the project")
-            st.markdown("---")  # Add a separator line
-            return  # Stop here if prohibited by project
+                if tos_active == "Yes":
+                    # Display mad bagel icon
+                    try:
+                        mad_icon = Image.open("bagel-icon-mad.png")
+                        st.image(mad_icon, width=80)
+                    except FileNotFoundError:
+                        pass  # Icon not found, continue without it
+                    
+                    st.markdown("### 🚫 Violating terms of service is prohibited when prohibited by the project")
+                    st.markdown("---")  # Add a separator line
+                    return  # Stop here if prohibited by project
         
         # Only show remaining questions if TOS is not prohibited by project
         if tos_active == "No":
