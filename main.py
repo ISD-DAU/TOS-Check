@@ -106,9 +106,14 @@ def main():
             st.session_state.tos_active = tos_active
             st.rerun()  # Refresh to update the icon
         
+        # Display immediate warning for project prohibition
+        if tos_active == "Yes":
+            st.markdown("### 🚫 Violating terms of service is prohibited when prohibited by the project")
+            st.markdown("---")
+            return  # Stop here if prohibited by project
+        
         # Only show remaining questions if TOS is not prohibited by project
         if tos_active == "No":
-            mad_reb = False
             # Published research status
             st.write("**3. Will this research be published?**")
             published = st.radio("", ["No", "Yes"], label_visibility="collapsed", key="published_radio", index=None)
