@@ -7,9 +7,9 @@ violation_extensive = ["Under 10,000 violations", "10,000+ violations"]
 pii_involved = ["Yes", "No"]
 violation_type = ["Transcription", "Scraping", "Other (specify)"]
 
-# Example email template for permission
+# Example email template for Sarah's permission
 email_template = """
-Hi [Name],
+Hi Sarah,
 I'm reaching out to ask for your permission to proceed with a project that involves [platform] and may violate its Terms of Service. The research will be published, it involves [number] violations, and there are concerns about sensitive PII.
 Please let me know if you need more information or if this requires further review.
 Best regards,
@@ -55,12 +55,13 @@ def main():
         placeholder="Select a platform..."
     )
     
-    # Display immediate warning only for platform X
+    # Display immediate warning only for platform X and stop flow
     if platform_choice == "X":
         st.markdown("### ⚠️ Violating X's terms of service is prohibited")
         st.markdown("---")  # Add a separator line
+        return  # Stop here if X is selected
     
-    # Only show question 2 if platform is selected
+    # Only show question 2 if platform is selected (and not X)
     if platform_choice:
         # Active prohibition check
         st.write("**2. Does the project actively prohibit terms of service violations?**")
