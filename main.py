@@ -7,9 +7,9 @@ violation_extensive = ["Under 10,000 violations", "10,000+ violations"]
 pii_involved = ["Yes", "No"]
 violation_type = ["Transcription", "Scraping", "Other (specify)"]
 
-# Example email template for permission
+# Example email template for Sarah's permission
 email_template = """
-Hi [Name],
+Hi Sarah,
 I'm reaching out to ask for your permission to proceed with a project that involves [platform] and may violate its Terms of Service. The research will be published, it involves [number] violations, and there are concerns about sensitive PII.
 Please let me know if you need more information or if this requires further review.
 Best regards,
@@ -136,6 +136,10 @@ def main():
                                     st.markdown(email_template.replace("[platform]", platform_choice).replace("[number]", str(violation_count)))
                                 else:
                                     st.success(f"Proceed with caution! Risk score: {total_risk}")
+                                
+                                # Special note for Discord
+                                if platform_choice == "Discord":
+                                    st.info("📋 **Additional Note:** For Discord projects, please also check with our ethics officer before proceeding.")
 
 if __name__ == "__main__":
     main()
