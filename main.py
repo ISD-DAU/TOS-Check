@@ -37,9 +37,6 @@ def calculate_risk(platform, tos_violations, published_research, violation_exten
     if pii_involved == "Yes":  # Changed to check for "Yes" string
         risk += 2
     
-    if violation_type == "Scraping":
-        risk += 1
-    
     # Adjust risk based on who is doing the violation
     if violation_actor == "Someone else":
         risk -= 1
