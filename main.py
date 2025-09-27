@@ -41,18 +41,21 @@ def main():
     st.title("TOS Violation Risk Assessor")
     
     # Platform selection
+    st.write("**1. Which platform are we dealing with?**")
     platform_choice = st.selectbox(
-        "Which platform are we dealing with?",
-        platforms + ["Other closed platforms"]
+        "",
+        platforms + ["Other closed platforms"],
+        label_visibility="collapsed"
     )
     
     # Display immediate warning only for platform X
     if platform_choice == "X":
-        st.markdown(f"### ⚠️ Violating {platform_choice}'s terms of service is prohibited")
+        st.markdown("### ⚠️ Violating X's terms of service is prohibited")
         st.markdown("---")  # Add a separator line
     
     # Active prohibition check
-    tos_active = st.radio("Does the project actively prohibit terms of service violations?", tos_violations)
+    st.write("**2. Does the project actively prohibit terms of service violations?**")
+    tos_active = st.radio("", tos_violations, label_visibility="collapsed")
     
     # Display immediate warning for project prohibition
     if tos_active == "Yes":
@@ -63,21 +66,27 @@ def main():
     # Only show remaining questions if not prohibited by project
     if tos_active == "No":
         # Published research status
-        published = st.checkbox("Will this research be published?")
+        st.write("**3. Will this research be published?**")
+        published = st.checkbox("", label_visibility="collapsed")
         
         # Violation extent
+        st.write("**4. How many violations are we looking at?**")
         violation_count = st.selectbox(
-            "How many violations are we looking at?",
-            violation_extensive
+            "",
+            violation_extensive,
+            label_visibility="collapsed"
         )
         
         # Involvement of sensitive PII
-        pii_check = st.checkbox("Does the project involve sensitive PII (Personally Identifiable Information)?")
+        st.write("**5. Does the project involve sensitive PII (Personally Identifiable Information)?**")
+        pii_check = st.checkbox("", key="pii_checkbox", label_visibility="collapsed")
         
         # Type of violation
+        st.write("**6. What type of violation are we assessing?**")
         violation_type_choice = st.selectbox(
-            "What type of violation are we assessing?",
-            violation_type
+            "",
+            violation_type,
+            label_visibility="collapsed"
         )
         
         # Add button to calculate risk
