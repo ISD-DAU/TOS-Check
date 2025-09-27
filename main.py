@@ -104,17 +104,17 @@ def main():
         tos_active = st.radio("", tos_violations, label_visibility="collapsed", index=None)
         
         # Display immediate warning for project prohibition
-                if tos_active == "Yes":
-                    # Display mad bagel icon
-                    try:
-                        mad_icon = Image.open("bagel-icon-mad.png")
-                        st.image(mad_icon, width=80)
-                    except FileNotFoundError:
-                        pass  # Icon not found, continue without it
-                    
-                    st.markdown("### 🚫 Violating terms of service is prohibited when prohibited by the project")
-                    st.markdown("---")  # Add a separator line
-                    return  # Stop here if prohibited by project
+        if tos_active == "Yes":
+            # Display mad bagel icon
+            try:
+                mad_icon = Image.open("bagel-icon-mad.png")
+                st.image(mad_icon, width=80)
+            except FileNotFoundError:
+                pass  # Icon not found, continue without it
+            
+            st.markdown("### 🚫 Violating terms of service is prohibited when prohibited by the project")
+            st.markdown("---")  # Add a separator line
+            return  # Stop here if prohibited by project
         
         # Only show remaining questions if TOS is not prohibited by project
         if tos_active == "No":
