@@ -97,9 +97,6 @@ def main():
     
     # Only show question 2 if platform is selected (and not X)
     if platform_choice:
-    
-    # Only show question 2 if platform is selected (and not X)
-    if platform_choice:
         # Active prohibition check
         st.write("**2. Does the project actively prohibit terms of service violations?**")
         tos_active = st.radio("", tos_violations, label_visibility="collapsed", index=None)
