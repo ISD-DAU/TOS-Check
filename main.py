@@ -47,7 +47,19 @@ def calculate_risk(platform, tos_violations, published_research, violation_exten
     return risk
 
 def main():
-    mad_reb = False
+    # Platform selection (temporary, just for checking)
+    platform_choice = st.selectbox(
+        "",
+        platforms + ["Other closed platforms"],
+        label_visibility="collapsed",
+        index=None,
+        placeholder="Select a platform...",
+        key="temp_platform"
+    )
+    
+    # Check if we need mad reb
+    mad_reb = platform_choice == "X"
+    
     # Create columns for title and icon
     col1, col2 = st.columns([4, 1])
     with col1:
@@ -55,16 +67,16 @@ def main():
         st.markdown("<h2 style='margin-top: 0; color: gray;'>The ToS Violation Risk Expert</h2>", unsafe_allow_html=True)
     with col2:
         try:
-            if mad_reb == False:
-                icon = Image.open("bagel-icon.png")
+            if mad_reb:
+                icon = Image.open("bagel-icon-mad.png")
                 st.image(icon, width=80)
             else:
-                icon = Image.open("bagel-icon-mad.png")
+                icon = Image.open("bagel-icon.png")
                 st.image(icon, width=80)
         except FileNotFoundError:
             pass
 
-    # Platform selection
+    # Platform selection (the real one)
     st.write("**1. Which platform are we dealing with?**")
     platform_choice = st.selectbox(
         "",
