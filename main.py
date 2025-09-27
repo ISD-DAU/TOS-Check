@@ -60,7 +60,7 @@ def main():
                 st.image(icon, width=80)
             else:
                 icon = Image.open("bagel-icon-mad.png")
-                st.image(icon, width=80
+                st.image(icon, width=80)
         except FileNotFoundError:
             pass
 
