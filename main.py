@@ -50,7 +50,7 @@ def main():
     # Create columns for title and icon
     col1, col2 = st.columns([4, 1])
     with col1:
-        st.title("TOS Violation Risk Assessor")
+        st.title("Ask Reb, the ToS Violation Risk Assessor")
     with col2:
         try:
             icon = Image.open("bagel-icon.png")
