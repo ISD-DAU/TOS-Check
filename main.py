@@ -1,15 +1,15 @@
 import streamlit as st
 
-platforms = ["Twitter", "Facebook", "Instagram", "Discord", "Other"]
-tos_violations = ["Yes", "No"]
+platforms = ["Facebook", "Instagram", "Discord", "X", "Other"]
+tos_violations = ["No", "Yes"]
 published_research = ["Yes", "No"]
 violation_extensive = ["Under 10,000 violations", "10,000+ violations"]
 pii_involved = ["Yes", "No"]
 violation_type = ["Transcription", "Scraping", "Other (specify)"]
 
-# Example email template for leadership's permission
+# Example email template for Sarah's permission
 email_template = """
-Hi [Name],
+Hi Sarah,
 I'm reaching out to ask for your permission to proceed with a project that involves [platform] and may violate its Terms of Service. The research will be published, it involves [number] violations, and there are concerns about sensitive PII.
 Please let me know if you need more information or if this requires further review.
 Best regards,
@@ -46,8 +46,8 @@ def main():
         platforms + ["Other closed platforms"]
     )
     
-    # Display immediate warning for platform TOS violation
-    if platform_choice:
+    # Display immediate warning only for platform X
+    if platform_choice == "X":
         st.markdown(f"### ⚠️ Violating {platform_choice}'s terms of service is prohibited")
         st.markdown("---")  # Add a separator line
     
