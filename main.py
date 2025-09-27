@@ -6,7 +6,6 @@ tos_violations = ["No", "Yes"]
 published_research = ["Yes", "No"]
 violation_extensive = ["Under 10,000 violations", "10,000+ violations"]
 pii_involved = ["Yes", "No"]
-violation_type = ["Transcription", "Scraping", "Other"]
 
 # Example email template for permission
 email_template = """
@@ -17,7 +16,7 @@ Best regards,
 [Your Name]
 """
 
-def calculate_risk(platform, tos_violations, published_research, violation_extensive, pii_involved, violation_type, violation_actor):
+def calculate_risk(platform, tos_violations, published_research, violation_extensive, pii_involved, violation_actor):
     # Initialize risk score
     risk = 0
     
@@ -138,54 +137,43 @@ def main():
                     
                     # Only show question 6 if question 5 is answered
                     if pii_check is not None:
-                        # Type of violation
-                        st.write("**6. What type of violation are we assessing?**")
-                        violation_type_choice = st.selectbox(
-                            "",
-                            violation_type,
-                            label_visibility="collapsed",
-                            index=None,
-                            placeholder="Select violation type..."
-                        )
+                        # Who is doing the violation
+                        st.write("**7. Are you doing the violation or has someone else (e.g. someone else scraped data that you want to use)?**")
+                        violation_actor = st.radio("", ["Yourself", "Someone else"], label_visibility="collapsed", key="actor_radio", index=None)
                         
-                        # Only show question 7 if question 6 is answered
-                        if violation_type_choice:
-                            # Who is doing the violation
-                            st.write("**7. Are you doing the violation or has someone else (e.g. someone else scraped data that you want to use)?**")
-                            violation_actor = st.radio("", ["Yourself", "Someone else"], label_visibility="collapsed", key="actor_radio", index=None)
-                            
-                            # Only show calculate button if question 7 is answered
-                            if violation_actor:
-                                # Add button to calculate risk
-                                if st.button("Calculate Risk", type="primary"):
-                                    # Debug: Show what values we're passing -- removed for now
-                                    #st.write("Debug info:")
-                                    #st.write(f"Platform: {platform_choice}")
-                                    #st.write(f"TOS Active: {tos_active}")
-                                    #st.write(f"Published: {published}")
-                                    #st.write(f"Violation Count: {violation_count}")
-                                    #st.write(f"PII Check: {pii_check}")
-                                    #st.write(f"Violation Type: {violation_type_choice}")
-                                    #st.write(f"Violation Actor: {violation_actor}")
-                                    
-                                    # Calculate risk and display results
-                                    total_risk = calculate_risk(platform_choice, tos_active, published, violation_count, pii_check, violation_type_choice, violation_actor)
-                                    
-                                    st.markdown("---")  # Add separator before results
-                                    
-                                    if total_risk >= 4:
-                                        st.error(f"Project is deemed prohibited with a risk score of {total_risk}. No further action can be taken.")
-                                    elif total_risk >= 2:
-                                        st.warning(f"Risk level indicates the need for higher-level approval. Risk score: {total_risk}. Please refer to the email template below for guidance.")
-                                        # Display example email for warning level only
-                                        st.subheader("Example Email for Permission:")
-                                        st.markdown(email_template.replace("[platform]", platform_choice).replace("[number]", str(violation_count)))
-                                    else:
-                                        st.success(f"Proceed with caution! Risk score: {total_risk}")
-                                    
-                                    # Special note for Discord
-                                    if platform_choice == "Discord":
-                                        st.info("📋 **Additional Note:** For Discord projects, please also check with our ethics officer before proceeding.")
+                        # Only show calculate button if question 7 is answered
+                        if violation_actor:
+                            # Add button to calculate risk
+                            if st.button("Calculate Risk", type="primary"):
+                                # Debug: Show what values we're passing -- removed for now
+                                #st.write("Debug info:")
+                                #st.write(f"Platform: {platform_choice}")
+                                #st.write(f"TOS Active: {tos_active}")
+                                #st.write(f"Published: {published}")
+                                #st.write(f"Violation Count: {violation_count}")
+                                #st.write(f"PII Check: {pii_check}")
+                                #st.write(f"Violation Actor: {violation_actor}")
+                                
+                                # Calculate risk and display results
+                                total_risk = calculate_risk(platform_choice, tos_active, published, violation_count, pii_check, violation_actor)
+                                
+                                st.markdown("---")  # Add separator before results
+                                
+                                if total_risk >= 4:
+                                    st.error(f"Project is deemed prohibited with a risk score of {total_risk}. No further action can be taken.")
+                                elif total_risk >= 2:
+                                    st.warning(f"Risk level indicates the need for higher-level approval. Risk score: {total_risk}. Please refer to the email template below for guidance.")
+                                    # Display example email for warning level only
+                                    st.subheader("Example Email for Permission:")
+                                    st.markdown(email_template.replace("[platform]", platform_choice).replace("[number]", str(violation_count)))
+                                else:
+                                    st.success(f"Proceed with caution! Risk score: {total_risk}")
+                                
+                                # Special note for Discord
+                                if platform_choice == "Discord":
+                                    st.info("📋 **Additional Note:** For Discord projects, please also check with our ethics officer before proceeding.")
+                                if pii_check == "Yes":
+                                    st.info("📋 **Additional Note:** For collecting sensitive data, please also check with our ethics officer before proceeding.")
 
 if __name__ == "__main__":
     main()
