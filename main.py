@@ -31,7 +31,7 @@ def calculate_risk(platform, tos_violations, published_research, violation_exten
         risk += 1
     
     if violation_extensive == "10,000+ violations":
-        if platform == "Discord" or platform == "Other closed platforms":
+        if platform == "Discord" or platform == "Other closed platforms" or pii_involved == 'Yes':
             risk += 2
         else:
             risk += 1
