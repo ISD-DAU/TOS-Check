@@ -50,8 +50,8 @@ def main():
     # Create columns for title and icon
     col1, col2 = st.columns([4, 1])
     with col1:
-        st.title("Ask Reb")
-        st.markdown("## The ToS Violation Risk Expert")
+        st.markdown("<h1 style='margin-bottom: 0;'>Ask Reb</h1>", unsafe_allow_html=True)
+        st.markdown("<h2 style='margin-top: 0; color: gray;'>The ToS Violation Risk Expert</h2>", unsafe_allow_html=True)
     with col2:
         try:
             icon = Image.open("bagel-icon.png")
