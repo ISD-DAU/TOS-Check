@@ -22,23 +22,23 @@ def calculate_risk(platform, tos_violations, published_research, violation_exten
     
     if platform == "Discord":
         # Higher risk for platforms like Discord due to privacy expectations
-        risk += 1  # Implement logic based on earlier discussion
+        risk += 1
     
     if tos_violations == "Yes":
-        risk += 2  # Prohibited
+        risk += 2
     
-    if published_research == "Yes":
+    if published_research == True:  # Changed from "Yes" to True
         risk += 1
     
     if violation_extensive == "10,000+ violations":
         if platform == "Discord" or platform == "Other closed platforms":
             risk += 1
     
-    if pii_involved == "Yes":
-        risk += 2  # High risk, requires permission
+    if pii_involved == True:  # Changed from "Yes" to True
+        risk += 2
     
     if violation_type == "Scraping":
-        risk += 1  # Implement scraping-specific considerations
+        risk += 1
     
     return risk
 
