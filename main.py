@@ -6,7 +6,7 @@ tos_violations = ["No", "Yes"]
 published_research = ["Yes", "No"]
 violation_extensive = ["Under 10,000 violations", "10,000+ violations"]
 pii_involved = ["Yes", "No"]
-violation_type = ["Transcription", "Scraping", "Other (specify)"]
+violation_type = ["Transcription", "Scraping", "Other"]
 
 # Example email template for permission
 email_template = """
