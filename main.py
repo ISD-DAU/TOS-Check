@@ -1,0 +1,100 @@
+import streamlit as st
+
+platforms = ["Twitter", "Facebook", "Instagram", "Discord", "Other"]
+tos_violations = ["Yes", "No"]
+published_research = ["Yes", "No"]
+violation_extensive = ["Under 10,000 violations", "10,000+ violations"]
+pii_involved = ["Yes", "No"]
+violation_type = ["Transcription", "Scraping", "Other (specify)"]
+
+# Example email template for Sarah's permission
+email_template = """
+Hi Sarah,
+
+I'm reaching out to ask for your permission to proceed with a project that involves [platform] and may violate its Terms of Service. The research will be published, it involves [number] violations, and there are concerns about sensitive PII.
+
+Please let me know if you need more information or if this requires further review.
+
+Best regards,
+[Your Name]
+"""
+
+def calculate_risk(platform, tos_violations, published_research, violation_extensive, pii_involved, violation_type):
+    # Initialize risk score
+    risk = 0
+
+    if platform == "Discord":
+        # Higher risk for platforms like Discord due to privacy expectations
+        pass  # Implement logic based on earlier discussion
+
+    if tos_violations == "Yes":
+        return 2  # Prohibited
+
+    if published_research == "Yes":
+        risk += 1
+
+    if violation_extensive:
+        if platform != "Discord" and platform != "Other closed platforms":
+            pass
+        else:
+            risk += 1
+
+    if pii_involved == "Yes":
+        return 2  # High risk, requires permission
+
+    if violation_type == "Scraping":
+        pass  # Implement scraping-specific considerations
+
+    return risk
+
+def main():
+    st.title("TOS Violation Risk Assessor")
+
+    # Platform selection
+    platform_choice = st.selectbox(
+        "Which platform are we dealing with?",
+        platforms + ["Other closed platforms"]
+    )
+
+    # Active prohibition check
+    tos_active = st.radio("Does the project actively prohibit terms of service violations?", tos_violations)
+
+    # Published research status
+    published = st.checkbox("Will this research be published?")
+
+    # Violation extent
+    violation_count = st.selectbox(
+        "How many violations are we looking at?",
+        violation_extensive
+    )
+
+    # Involvement of sensitive PII
+    pii_check = st.checkbox("Does the project involve sensitive PII (Personally Identifiable Information)?")
+
+    # Type of violation
+    violation_type_choice = st.selectbox(
+        "What type of violation are we assessing?",
+        violation_type
+    )
+
+    # Calculate risk and display results
+    if tos_active == "Yes":
+        st.warning("The project is prohibited by the platform's TOS. No further action can be taken.")
+        return
+
+    total_risk = calculate_risk(platform_choice, tos_active, published, violation_count, pii_check, violation_type_choice)
+    
+    if total_risk >= 4:
+        st.error(f"Project is deemed prohibited with a risk score of {total_risk}. No further action can be taken.")
+    elif total_risk == 2 or (total_risk == 3 and not published):
+        st.warning("Risk level indicates the need for higher-level approval. Please refer to the email template below for guidance.")
+    else:
+        st.success(f"Proceed with caution! Risk score: {total_risk}")
+
+    # Display example email
+    if total_risk >= 2:
+        st.subheader("Example Email for Permission:")
+        st.markdown(email_template.replace("[platform]", platform_choice).replace("[number]", str(violation_count)))
+
+if __name__ == "__main__":
+    main()
