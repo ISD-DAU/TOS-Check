@@ -51,7 +51,7 @@ def main():
     col1, col2 = st.columns([4, 1])
     with col1:
         st.title("Ask Reb")
-        st.write("The ToS Violation Risk Expert")
+        st.header("TOS Violation Risk Assessor")
     with col2:
         try:
             icon = Image.open("bagel-icon.png")
