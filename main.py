@@ -71,6 +71,13 @@ def main():
     
     # Display immediate warning only for platform X and stop flow
     if platform_choice == "X":
+        # Display mad bagel icon
+        try:
+            mad_icon = Image.open("bagel-icon-mad.png")
+            st.image(mad_icon, width=80)
+        except FileNotFoundError:
+            pass  # Icon not found, continue without it
+        
         st.markdown("### ⚠️ Violating X's terms of service is prohibited")
         st.markdown("---")  # Add a separator line
         return  # Stop here if X is selected
