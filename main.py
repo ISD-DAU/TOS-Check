@@ -136,7 +136,7 @@ def main():
                                 st.markdown("---")  # Add separator before results
                                 
                                 if total_risk >= 4:
-                                    st.error(f"Violation is deemed prohibited with a risk score of {total_risk}. No further action can be taken.")
+                                    st.error(f"Violation is likely prohibited with a risk score of {total_risk}. Recommend no further action - but do consult legal counsel if important.")
                                 elif total_risk >= 2:
                                     st.warning(f"Risk level indicates the need for higher-level approval. Risk score: {total_risk}. Please refer to the email template below for guidance.")
                                     # Display example email for warning level only
