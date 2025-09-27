@@ -50,16 +50,6 @@ def main():
     # Track if any warnings are shown
     show_mad_icon = False
     
-    # Check if we should show mad icon (do this check early)
-    platform_choice_temp = st.selectbox(
-        "",
-        platforms + ["Other closed platforms"],
-        label_visibility="collapsed",
-        index=None,
-        placeholder="Select a platform...",
-        key="temp_platform"
-    )
-    
     # Create columns for title and icon
     col1, col2 = st.columns([4, 1])
     with col1:
