@@ -129,8 +129,8 @@ def main():
                                 
                                 if total_risk >= 4:
                                     st.error(f"Project is deemed prohibited with a risk score of {total_risk}. No further action can be taken.")
-                                elif total_risk == 2 or (total_risk == 3 and published == "No"):
-                                    st.warning("Risk level indicates the need for higher-level approval. Please refer to the email template below for guidance.")
+                                elif total_risk >= 2:
+                                    st.warning(f"Risk level indicates the need for higher-level approval. Risk score: {total_risk}. Please refer to the email template below for guidance.")
                                     # Display example email for warning level only
                                     st.subheader("Example Email for Permission:")
                                     st.markdown(email_template.replace("[platform]", platform_choice).replace("[number]", str(violation_count)))
